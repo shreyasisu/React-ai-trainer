@@ -16,7 +16,7 @@ function App() {
     setError('');
     setWorkout(null);
     try {
-      const response = await axios.post('http://192.168.1.129:5001/workout', {
+      const response = await axios.post('http://localhost:5001/workout', {
         goal,
         duration: parseInt(duration),
         work_day: workDay,
