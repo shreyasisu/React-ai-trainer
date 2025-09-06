@@ -4,6 +4,8 @@ import axios from 'axios';
 import "./App.css";
 
 function App() {
+
+  //set usestates for function call App(). these are run every update unless using a function call
   const [goal, setGoal] = useState('lose');
   const [duration, setDuration] = useState(60);
   const [workDay, setWorkDay] = useState('push');
@@ -13,8 +15,10 @@ function App() {
   const [error, setError] = useState('');
 
   const generateWorkout = async () => {
+    //reset workout
     setError('');
     setWorkout(null);
+    //axios to handle post to backend
     try {
       const response = await axios.post('http://localhost:5001/workout', {
         goal,
@@ -23,14 +27,17 @@ function App() {
         pain_area: painArea,
         pain_preference: painPreference
       });
+      //change state for workout to data
       setWorkout(response.data);
     } catch (err) {
+      //change state for error with error msg
       setError(err.response?.data?.error || 'Failed to fetch workout plan.');
     }
   };
 
-  return (
+  return (//react front end
     <div style={{ maxWidth: 600, margin: 'auto', padding: 20 }}>
+      {/*questionare with prefilled state values and using change state functions on change*/}
       <h1>AI Personal Trainer</h1>
 
       <label>Goal:</label>
@@ -72,11 +79,14 @@ function App() {
         <option value="address">Address / Strengthen</option>
       </select>
 
+      {/*On click generate button send call to backend using generateWorkout() function to call chat api*/}
       <br /><br />
       <button onClick={generateWorkout}>Generate Workout</button>
 
+      {/*If error exists display it in red*/}
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
+      {/*Display workout if it exists. loop through map and use li to list items. */}
       {workout && (
         <div>
           <h2>Workout Plan</h2>
